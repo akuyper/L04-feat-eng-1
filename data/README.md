@@ -1,7 +1,8 @@
 ## Dataset
 
-This data was sourced from Kaggle [see website](https://www.kaggle.com/datasets/joebeachcapital/credit-card-fraud/data).
+This data was sourced from Kaggle [see website](https://www.kaggle.com/datasets/uciml/adult-census-income/data).
 
-- `rideshare.rda`
-- `rideshare_codebook.txt`
+- `adult_train.csv`
+- `adult_test.csv`
+- `adult_codebook.txt`
 
