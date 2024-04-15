@@ -1,0 +1,289 @@
+---
+title: "L04 Feature Engineering I"
+subtitle: "Data Science 3 with R (STAT 301-3)"
+author: "YOUR NAME"
+pagetitle: "L04 YOUR NAME"
+date: today
+
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-location: left
+    embed-resources: true
+    code-fold: false
+    link-external-newwindow: true
+
+execute:
+  warning: false
+  
+from: markdown+emoji
+reference-location: margin
+citation-location: margin
+---
+
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+To link to your github **repo**sitory, appropriately edit the example link below. Meaning replace `https://your-github-repo-url` with your github repo url. Suggest verifying the link works before submitting.
+
+[https://your-github-repo-url](https://your-github-repo-url)
+
+:::
+
+
+## Overview
+
+The goal of this lab is to (1) provide an in-depth understanding of errors/warnings related to factor variables, (2) demonstrate different imputation techniques, and (3) introduce a new model type: neural networks.
+
+
+## Exercises
+
+We will be using a modification of the `adult` dataset^[Kaggle Uber & Lyft Dataset ([see website](https://www.kaggle.com/datasets/uciml/adult-census-income/data))]. The dataset has been pre-split into a training and testing dataset found in the `\data` directory. Take a moment to read the variable definitions in `adult_codebook.txt`.
+
+
+::: {.callout-note icon="false"}
+## Prediction goal
+
+The objective is to predict whether and individual earns and `income` of more than 50k (1) or less than 50k (0).
+
+:::
+
+### Exercise 1
+
+#### Task 1
+
+The data has been pre-split for you, but there still some initial work to be done. Working in `01_initial_setup.R`, load the training data (`adult_train.csv`). You'll need to convert character variables to factors and  set the reference level of the outcome variable, `income`, to be `1`. Then create resamples by folding the training data using repeated V-fold cross-validation (10 folds & 3 repeats). Use stratified sampling when folding the data. Be sure to write out the training set and folds as `.rda` files.
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE --- demonstrate cleaning and folds
+
+:::
+
+#### Task 2
+
+Using the `naniar` package, explore the nature of missingness in the training data. Use both graphics and summary tables. Display this work.
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+Above what “line-of-dignity” threshold is too much data imputation for a predictor/column?
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+Given the above information, how would you suggest handling the missingness that is present? 
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+Name at least 3 **simple** (non-model) based imputation steps that handle missingness issues. Indicate whether each step function can handle numeric, categorical, or both variable types.
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+Name at least 2 **more complex** model based imputation steps that handle missingness issues. Indicate whether each step function can handle numeric, categorical, or both variable types.
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+The most important question we must ask when encountering missing data is “Why is the data missing?” That answer gives important information about how the missingness should be handled. If a factor variable is **missing not at random** it could be more appropriate to set all missing factor data to a new level called "unknown" rather than to impute. What is the name of the `step` and does this apply to any of our variables?
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+#### Task 3
+
+#### Task 3
+
+Create a recipe called `recipe_basic` that predicts `income` using all variables with the following steps:
+
+  - remove variables with exactly zero variance
+  - dummy encode factor variables
+  - normalize numeric variables
+  - remove variables not appropriate for prediction
+  - impute `education_num`, `hours_per_week`, `occupation`, `workclass`, and `native_country` with **simple** imputation methods
+  
+::: {.callout-caution}
+The provided steps are intentionally out of order. You need to determine the appropriate ordering.
+:::
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE - display recipe
+
+:::
+  
+  
+#### Task 4
+
+Let's pretend the "best model" was a simple logistic regression model. A script (`3_fit_logistic.R`) has been provided that finalizes the fit and checks its performance on the test set. All you need to do is load a few items that are indicated towards the top of the script (`adult_train`, `adult_test`, and `recipe_basic`) and then run the script. No other changes should be made to the script.^[We are glancing over the tuning and model selection process here (1) for time purposes, (2) we expect you know how to do this, and (3) the purpose of this exercise is to demonstrate odd situations you might run into.]
+
+Specify 2 *potential* issues that occur with your results.
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+### Exercise 2
+
+The goal of this exercise is to gain a deeper understanding of factor levels.
+
+#### Task 1
+
+When dummy encoding a factor variable with a large number of levels/categories, what are the two **filtering** steps we could implement to handle rarely occurring levels/categories?^[We used one of them in Exercise 1 recipe.] When should they be applied within our feature engineering recipe?  
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+#### Task 2
+
+Inspect the factor variables in the `adult_train` dataset with a large number of levels/categories. Use both graphics and summary tables.
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+If we decided that we wanted to avoid filtering our rarely occurring levels/categories, then what is one option/alternative that we have?
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+If we have new factor levels in the testing data that are not present in the training data and we want to avoid removing these levels, what is one option/alternative that we have?
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+#### Task 3
+
+If we have missing data in variables in the testing dataset, but those variables did not have missing data in the training dataset, how can we fix this to ensure the prediction is not NA?
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+  
+### Exercise 3
+
+We are going to now handle the issues discussed in Exercise 2 and compare a few imputation methods while fitting a single layer neural network (multilayer perceptron — [mlp](https://parsnip.tidymodels.org/reference/mlp.html)).
+
+#### Task 1
+
+Create `recipe_simple` by starting with `income` being predicted by all other variables and adding the following steps:
+
+  - remove variables with **near** zero variance
+  - dummy encode factor variables with one-hot encoding^[We will be fitting a neural network so one-hot encoding is more appropriate.]
+  - convert any factor level below 0.05 to `"other"`
+  - (optional) handle novel factor levels^[This may not be entirely necessary; a lot of times converting rare factors to `"other"` handles this naturally.]
+  - normalize numeric variables
+  - remove variables not appropriate for prediction
+  - handle known missingness with **simple** imputation methods
+  - handle potential missingness issues in the testing data by imputing all other potential variables using a **simple** imputation method
+
+::: {.callout-caution}
+The provided steps are intentionally out of order. You need to determine the appropriate ordering.
+:::
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE -- display recipe
+
+:::
+
+#### Task 2
+
+Create `recipe_complex` by using the same steps as in `recipe_simple` **except**:
+
+- use linear regression to impute the numeric variables `education_num` and `hours_per_week` and 
+- use knn to impute the factor variables `occupation`, `workclass`, and `native_country`
+
+If you do not modify any settings within the imputation steps you should see the following warning: 
+
+> There were missing values in the predictor(s) used to impute; imputation did not occur.
+
+What does this warning mean/why did the imputation fail if we use the default settings?
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE
+
+:::
+
+Correct the error in the recipe (if you have not done so already) by being thoughtful about the variables you impute with. Why did you choose these variables?
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE - display final recipe and answer question here
+
+:::
+
+#### Task 3
+
+Train 2 single layer neural network (multilayer perceptron — mlp) workflows/models. One model should use the `recipe_simple` created in Exercise 3 Task 1 and the other model should use the `recipe_complex` created in Exercise 3 Task 2. There should be no other differences between these two models.
+
+- tune `hidden_units` and `penalty` (default values a sufficient, free to change if you want)
+- `nnet` for the engine will be easiest, Alternatively, you might want to try `keras` if you can get it installed (Keras Installation).
+
+Does one of your imputation methods result in a significantly better model? 
+
+Be sure to clearly state the metric chosen, the metric mean and standard error, and the run time of each model.
+
+
+::: {.callout-tip icon="false"}
+## Solution
+
+YOUR SOLUTION HERE - no need to display fit, table of model/workflow comparison only
+
+:::
