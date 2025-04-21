@@ -7,6 +7,7 @@ date: today
 
 format:
   html:
+    theme: cosmo
     toc: true
     toc-depth: 4
     toc-location: left
@@ -16,10 +17,10 @@ format:
 
 execute:
   warning: false
-  
+
 from: markdown+emoji
 reference-location: margin
-citation-location: margin
+citation-location: margin 
 ---
 
 
@@ -33,7 +34,6 @@ To link to your github **repo**sitory, appropriately edit the example link below
 
 :::
 
-
 ## Overview
 
 The goal of this lab is to (1) provide an in-depth understanding of errors/warnings related to factor variables, (2) demonstrate different imputation techniques, and (3) introduce a new model type: neural networks.
@@ -41,13 +41,13 @@ The goal of this lab is to (1) provide an in-depth understanding of errors/warni
 
 ## Exercises
 
-We will be using a modification of the `adult` dataset^[Kaggle Uber & Lyft Dataset ([see website](https://www.kaggle.com/datasets/uciml/adult-census-income/data))]. The dataset has been pre-split into a training and testing dataset found in the `\data` directory. Take a moment to read the variable definitions in `adult_codebook.txt`.
+We will be using a modification of the `adult` dataset^[Kaggle via UCI Adult Census Income dataset ([see website](https://www.kaggle.com/datasets/uciml/adult-census-income/data))]. The dataset has been pre-split into a training and testing dataset found in the `\data` directory. Take a moment to read the variable definitions in `adult_codebook.txt`.
 
 
 ::: {.callout-note icon="false"}
 ## Prediction goal
 
-The objective is to predict whether and individual earns and `income` of more than 50k (1) or less than 50k (0).
+The objective is to predict whether an individual earns an `income` of more than 50k (1) or less than 50k (0).
 
 :::
 
@@ -55,7 +55,7 @@ The objective is to predict whether and individual earns and `income` of more th
 
 #### Task 1
 
-The data has been pre-split for you, but there still some initial work to be done. Working in `01_initial_setup.R`, load the training data (`adult_train.csv`). You'll need to convert character variables to factors and  set the reference level of the outcome variable, `income`, to be `1`. Then create resamples by folding the training data using repeated V-fold cross-validation (10 folds & 3 repeats). Use stratified sampling when folding the data. Be sure to write out the training set and folds as `.rda` files.
+The data has been pre-split for you, but there is still some initial work to be done. Working in `01_initial_setup.R`, load the training data (`adult_train.csv`). You'll need to convert character variables to factors and  set the reference level of the outcome variable, `income`, to be `1`. Then create resamples by folding the training data using repeated V-fold cross-validation (10 folds & 3 repeats). Use stratified sampling when folding the data. Be sure to write out the training set and folds as `.rda` files.
 
 ::: {.callout-tip icon="false"}
 ## Solution
@@ -119,8 +119,6 @@ The most important question we must ask when encountering missing data is “Why
 YOUR SOLUTION HERE
 
 :::
-
-#### Task 3
 
 #### Task 3
 
@@ -274,7 +272,7 @@ YOUR SOLUTION HERE - display final recipe and answer question here
 Train 2 single layer neural network (multilayer perceptron — mlp) workflows/models. One model should use the `recipe_simple` created in Exercise 3 Task 1 and the other model should use the `recipe_complex` created in Exercise 3 Task 2. There should be no other differences between these two models.
 
 - tune `hidden_units` and `penalty` (default values a sufficient, free to change if you want)
-- `nnet` for the engine will be easiest, Alternatively, you might want to try `keras` if you can get it installed (Keras Installation).
+- `nnet` for the engine will be easiest, Alternatively, you might want to try `keras` if you can get it installed.
 
 Does one of your imputation methods result in a significantly better model? 
 
